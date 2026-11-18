@@ -258,6 +258,13 @@ tr.warm .inp{background:transparent;border:1px dashed var(--line2)}
 .olc{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 .res{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-top:14px;border-top:1px solid var(--line)}
 .res span{font-size:12px;color:var(--muted);display:block}
+.va-top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}.va-top b{font-family:var(--f-num,var(--f-display));font-stretch:72%;font-size:44px;line-height:1;font-variant-numeric:tabular-nums}.va-cat{font-size:13px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--line)}
+.va-gauge{position:relative;display:flex;height:10px;gap:2px;margin-top:4px}.va-gauge i{display:block;height:100%}.va-gauge i:nth-child(1){background:#60a5fa;border-radius:999px 0 0 999px}.va-gauge i:nth-child(2){background:#22c55e}.va-gauge i:nth-child(3){background:#facc15}.va-gauge i:nth-child(4){background:#fb923c}.va-gauge i:nth-child(5){background:#f87171}.va-gauge i:nth-child(6){background:#dc2626;border-radius:0 999px 999px 0}
+.va-gauge em{position:absolute;top:-5px;width:4px;height:20px;margin-left:-2px;border-radius:2px;background:currentColor;left:0;transition:left .8s cubic-bezier(.2,.8,.2,1)}
+.va-lab{position:relative;height:16px;font-size:12px;color:var(--muted)}.va-lab span{position:absolute;transform:translateX(-50%)}
+.kc-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.kc-row span,.kc-opt span{font-size:12px;color:var(--muted);display:block}.kc-row b{font-family:var(--f-num,var(--f-display));font-stretch:72%;font-size:28px;font-variant-numeric:tabular-nums}
+.kc-opts{display:grid;gap:8px}.kc-opt{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:56px;padding:10px 12px;border:1px solid var(--line);border-radius:14px}.kc-opt b{font-family:var(--f-num,var(--f-display));font-stretch:72%;font-size:22px;font-variant-numeric:tabular-nums}.kc-opt.on{border-color:var(--ok)}.kc-opt .mini{min-height:44px;white-space:nowrap;flex-shrink:0}
+@media (prefers-reduced-motion:reduce){.va-gauge em{transition:none}}
 .res b{font-size:24px;font-weight:700;line-height:1.05;white-space:nowrap}
 .res div:first-child b{color:var(--acc)}
 .sum{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -822,24 +829,41 @@ body::before{background:var(--bg)}
       <svg class="jchart" id="j-chart" viewBox="0 0 320 170" role="img" aria-label="Kilo grafiği"></svg>
       <div class="jeta" id="j-eta">Tahmin için en az 7 günlük tartı gerekiyor.</div>
     </section>
-    <h2 class="eyebrow" style="margin:6px 0 -6px">Mezura ölçümü</h2>
-    <section class="card">
-      <p class="fstat" style="margin:0">Ayda bir, sabah, aç. Bel: göbek deliği hizasından, nefes verilmiş halde. Boyun: âdem elmasının hemen altından. Navy formülü; boy ayarlardan alınır.</p>
-      <div class="olc">
-        <label class="f" for="o-bel">Bel (cm)<input id="o-bel" class="inp" inputmode="decimal" placeholder="118"></label>
-        <label class="f" for="o-kalca" id="o-kalca-l" hidden>Kalça (cm)<input id="o-kalca" class="inp" inputmode="decimal" placeholder="105"></label>
-      <label class="f" for="o-boyun">Boyun (cm)<input id="o-boyun" class="inp" inputmode="decimal" placeholder="44"></label>
-        <label class="f" for="o-kilo">Kilo (kg)<input id="o-kilo" class="inp" inputmode="decimal" placeholder="kg"></label>
-      </div>
-      <div class="res">
-        <div><span>Yağ oranı</span><b id="o-bf">-</b></div>
-        <div><span>Yağsız kütle</span><b id="o-lbm">-</b></div>
-        <div><span id="o-hl">%18-20 için kilo</span><b id="o-hedef">-</b></div>
-      </div>
-      <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="btn" id="o-save">Ölçümü kaydet</button><span class="fstat" id="o-st"></span></div>
+    <h2 class="eyebrow" style="margin:6px 0 -6px">Vücut analizi</h2>
+    <section class="card" aria-labelledby="kc-h">
+      <div class="ch"><h2 id="kc-h">Günlük kalori ihtiyacı</h2></div>
+      <label class="f" for="kc-akt">Hareket düzeyin<select id="kc-akt" class="inp">
+        <option value="1.2">Masa başı, spor yok</option>
+        <option value="1.375">Hafif: haftada 1-3 gün spor</option>
+        <option value="1.55">Orta: haftada 3-5 gün spor</option>
+        <option value="1.725">Yüksek: haftada 6-7 gün spor</option>
+        <option value="1.9">Çok yüksek: ağır iş + spor</option></select></label>
+      <div class="kc-row"><div><span>Bazal (dinlenirken)</span><b id="kc-bmr">-</b></div><div><span>Kilonu korumak için</span><b id="kc-tdee">-</b></div></div>
+      <div class="kc-opts" id="kc-opts"></div>
+      <p class="fstat" style="margin:0" id="kc-note"></p>
+      <span class="fstat" id="kc-st" role="status"></span>
     </section>
-    <svg class="spark" id="o-spark" viewBox="0 0 300 46" preserveAspectRatio="none" aria-label="Yağ oranı geçmişi"></svg>
-    <ul class="ol" id="o-list"><li class="empty">Henüz ölçüm yok. İlk ölçümünü gir ve kaydet.</li></ul>
+    <section class="card" aria-labelledby="va-h">
+      <div class="ch"><h2 id="va-h">Vücut kitle endeksi</h2><span class="fstat" id="va-src"></span></div>
+      <div class="va-top"><b id="va-bmi">-</b><span class="va-cat" id="va-cat"></span></div>
+      <div class="va-gauge" aria-hidden="true"><i style="flex:18.5"></i><i style="flex:6.5"></i><i style="flex:5"></i><i style="flex:5"></i><i style="flex:5"></i><i style="flex:10"></i><em id="va-mk"></em></div>
+      <div class="va-lab" aria-hidden="true"><span style="left:37%">18,5</span><span style="left:50%">25</span><span style="left:60%">30</span><span style="left:70%">35</span><span style="left:80%">40</span></div>
+      <div class="res">
+        <div><span>Başlangıçta</span><b id="va-b0">-</b></div>
+        <div><span>Hedef kiloda</span><b id="va-bh">-</b></div>
+        <div><span>Normal aralık</span><b id="va-nr">-</b></div>
+      </div>
+    </section>
+    <section class="card" aria-labelledby="vy-h">
+      <div class="ch"><h2 id="vy-h">Yağ oranı</h2><span class="fstat">tahmini</span></div>
+      <div class="va-top"><b id="vy-bf">-</b><span class="va-cat" id="vy-cat"></span></div>
+      <div class="res">
+        <div><span>Yağ kütlesi</span><b id="vy-fm">-</b></div>
+        <div><span>Yağsız kütle</span><b id="vy-lm">-</b></div>
+        <div><span>Başlangıçta</span><b id="vy-b0">-</b></div>
+      </div>
+      <p class="fstat" style="margin:0" id="vy-note"></p>
+    </section>
   </div>
 
   <div class="panel" id="tab-shop" role="tabpanel" aria-labelledby="t-shop" hidden>
@@ -902,6 +926,7 @@ body::before{background:var(--bg)}
         <label class="f" for="c-ad">Adın<input id="c-ad" class="inp" style="font-family:var(--f-body)"></label>
         <label class="f" for="c-cins">Cinsiyet<select id="c-cins" class="inp"><option value="e">Erkek</option><option value="k">Kadın</option></select></label>
         <label class="f" for="c-boy">Boy (cm)<input id="c-boy" class="inp" inputmode="decimal"></label>
+        <label class="f" for="c-dy">Doğum yılı<input id="c-dy" class="inp" inputmode="numeric" placeholder="1998"></label>
         <label class="f" for="c-bas">Başlangıç tarihi<input id="c-bas" class="inp" type="date"></label>
         <label class="f" for="c-bk">Başlangıç kilosu<input id="c-bk" class="inp" inputmode="decimal"></label>
         <label class="f" for="c-hk">Hedef kilo<input id="c-hk" class="inp" inputmode="decimal"></label>
@@ -1948,32 +1973,59 @@ async function loadShop(){
 }
 $("s-reset").addEventListener("click",()=>{shop={tik:{}};renderShop();saveShop()});
 
-/* ---------- Ölçüm ---------- */
-const BOY=(Number(CFG.boy)||175)/2.54, KADIN=CFG.cinsiyet==="k";
-if(KADIN){document.getElementById("o-kalca-l").hidden=false; document.getElementById("o-hl").textContent="%25-28 için kilo";}
-let olc=[];
-function navy(bel,boyun){const b=bel/2.54,n=boyun/2.54; if(KADIN){const k=(num($("o-kalca").value)||0)/2.54; if(!k||b+k-n<=0) return null; return 163.205*Math.log10(b+k-n)-97.684*Math.log10(BOY)-78.387} if(b-n<=0) return null; return 86.010*Math.log10(b-n)-70.041*Math.log10(BOY)+36.76}
-function calc(){
-  const bel=num($("o-bel").value), boyun=num($("o-boyun").value), kilo=num($("o-kilo").value);
-  let bf=null; if(bel&&boyun&&bel>40&&boyun>20) bf=navy(bel,boyun);
-  $("o-bf").textContent= bf==null?"-":"%"+fmt(bf);
-  if(bf!=null&&kilo){const lbm=kilo*(1-bf/100); $("o-lbm").textContent=fmt(lbm)+" kg"; $("o-hedef").textContent= KADIN? Math.round(lbm/0.75)+"-"+Math.round(lbm/0.72)+" kg" : Math.round(lbm/0.82)+"-"+Math.round(lbm/0.80)+" kg";}
-  else{$("o-lbm").textContent="-"; $("o-hedef").textContent="-";}
-  return {bel,boyun,kilo,bf};
+/* ---------- Vücut analizi ---------- */
+const KADIN=CFG.cinsiyet==="k";
+function bmiOf(k){ const h=(Number(CFG.boy)||0)/100; return (k&&h>1)? k/(h*h) : null; }
+function bmiCat(b){ return b<18.5?["Zayıf","#60a5fa"]:b<25?["Normal","#22c55e"]:b<30?["Fazla kilolu","#facc15"]:b<35?["Obez (1. derece)","#fb923c"]:b<40?["Obez (2. derece)","#f87171"]:["Obez (3. derece)","#dc2626"]; }
+function yas(){ const y=Number(CFG.dogumYili); return y? new Date().getFullYear()-y : null; }
+function bfOf(b,a){ if(b==null||a==null) return null; const S=KADIN?1:0;
+  const v=-44.988+0.503*a+10.689*S+3.172*b-0.026*b*b+0.181*b*S-0.02*b*a-0.005*b*b*S+0.00021*b*b*a; return Math.max(3,Math.min(60,v)); }
+function bfCat(v){ const t=KADIN?[14,21,25,32]:[6,14,18,25]; return v<t[0]?"Çok düşük":v<t[1]?"Atletik":v<t[2]?"Fit":v<t[3]?"Ortalama":"Yüksek"; }
+function setCat(el,txt,col){ el.textContent=txt||""; el.style.background=col? col+"33":""; el.style.color=col||""; el.hidden=!txt; }
+const f1=v=>v==null||!isFinite(v)?"-":fmt(Math.round(v*10)/10);
+function bmrOf(k){ const h=Number(CFG.boy), a=yas(); if(!k||!h||a==null) return null; return 10*k+6.25*h-5*a+(KADIN?-161:5); }
+function aktF(){ return Number(CFG.aktivite)||1.375; }
+function renderKcal(kilo){
+  $("kc-akt").value=String(aktF());
+  const bmr=bmrOf(kilo), box=$("kc-opts"); box.innerHTML="";
+  if(bmr==null){ $("kc-bmr").textContent="-"; $("kc-tdee").textContent="-"; $("kc-note").textContent="Hesap için Ayarlar → Profil'de boy, doğum yılı ve cinsiyeti, Beslenme ekranında sabah kilonu gir."; return; }
+  const tdee=bmr*aktF(), r50=x=>Math.round(x/50)*50, floor=Math.max(KADIN?1200:1500, bmr);
+  $("kc-bmr").textContent=r50(bmr)+" kcal"; $("kc-tdee").textContent=r50(tdee)+" kcal";
+  const opts=[["Yavaş kilo ver","haftada ~0,25 kg",250],["Dengeli kilo ver","haftada ~0,5 kg",500],["Hızlı kilo ver","haftada ~0,75 kg",750],["Kilonu koru","",0]];
+  const cur=Number(CFG.kcal)||null;
+  opts.forEach(([ad,alt,ac])=>{ const v=r50(Math.max(floor,tdee-ac)), d=document.createElement("div"); d.className="kc-opt"+(cur===v?" on":"");
+    const l=document.createElement("div"); l.innerHTML="<span></span><b></b>"; l.firstChild.textContent=ad+(alt?" · "+alt:""); l.lastChild.textContent=v+" kcal";
+    const btn=document.createElement("button"); btn.className="mini"; btn.type="button"; btn.textContent= cur===v?"Hedefin":"Hedef yap"; btn.disabled=cur===v;
+    btn.addEventListener("click",()=>{ try{ const c=JSON.parse(localStorage.getItem("cfg")||"{}"); c.kcal=v; localStorage.setItem("cfg",JSON.stringify(c)); CFG.kcal=v; $("kc-st").textContent="Günlük kalori hedefin "+v+" kcal oldu."; $("kc-st").style.color="var(--ok)"; renderKcal(kilo); setTimeout(()=>location.reload(),900);}catch(e){ $("kc-st").textContent="Kaydedilemedi."; } });
+    d.append(l,btn); box.appendChild(d); });
+  $("kc-note").textContent="Bazal ve koruma rakamı tahmindir, gerçek ihtiyaç ±%10 sapabilir. Önerilen hedef bazal metabolizmanın altına inmez. 2-3 hafta uygula, kilo gidişatına göre koçunla ayarla.";
 }
-["o-bel","o-boyun","o-kilo","o-kalca"].forEach(id=>$(id).addEventListener("input",calc));
-function renderOlc(){
-  const ul=$("o-list"); ul.innerHTML="";
-  if(!olc.length){ul.innerHTML='<li class="empty" style="border:1px dashed var(--line)">Henüz ölçüm yok. İlk ölçümünü gir ve kaydet.</li>';}
-  for(const o of olc){const li=document.createElement("li");
-    const a=document.createElement("span"); a.textContent=o.tarih.slice(8,10)+"."+o.tarih.slice(5,7)+"."+o.tarih.slice(0,4)+" · bel "+fmt(o.bel)+" · boyun "+fmt(o.boyun)+(o.kilo?" · "+fmt(o.kilo)+" kg":"");
-    const b=document.createElement("b"); b.textContent=o.bf!=null?"%"+fmt(o.bf):"-"; li.append(a,b); ul.appendChild(li);}
-  const svg=$("o-spark"); svg.innerHTML=""; const pts=olc.slice().reverse().filter(o=>o.bf!=null);
-  svg.style.display=pts.length>=2?"block":"none";
-  if(pts.length>=2){const ys=pts.map(o=>o.bf),mn=Math.min(...ys)-0.5,mx=Math.max(...ys)+0.5,X=i=>4+i*(292/(pts.length-1)),Y=v=>4+(mx-v)/(mx-mn)*38;
-    const ns="http://www.w3.org/2000/svg",pl=document.createElementNS(ns,"polyline");
-    pl.setAttribute("points",pts.map((o,i)=>X(i)+","+Y(o.bf)).join(" ")); pl.setAttribute("fill","none"); pl.setAttribute("stroke","var(--ok)"); pl.setAttribute("stroke-width","2"); pl.setAttribute("vector-effect","non-scaling-stroke"); svg.appendChild(pl);}
+$("kc-akt").addEventListener("change",e=>{ const v=Number(e.target.value); CFG.aktivite=v; try{ const c=JSON.parse(localStorage.getItem("cfg")||"{}"); c.aktivite=v; localStorage.setItem("cfg",JSON.stringify(c)); }catch(x){} loadBody(); });
+function renderBody(kilo,src){
+  renderKcal(kilo);
+  const b=bmiOf(kilo), a=yas();
+  $("va-src").textContent= src||"";
+  if(b==null){ $("va-bmi").textContent="-"; setCat($("va-cat"),"Boy ve kiloyu gir",null); $("va-mk").style.left="0%";
+    ["va-b0","va-bh","va-nr","vy-bf","vy-fm","vy-lm","vy-b0"].forEach(id=>$(id).textContent="-"); setCat($("vy-cat"),"",null);
+    $("vy-note").textContent="Hesap için Ayarlar → Profil'de boy ve doğum yılını, Beslenme ekranında sabah kilonu gir."; return; }
+  $("va-bmi").textContent=f1(b); const c=bmiCat(b); setCat($("va-cat"),c[0],c[1]); $("va-mk").style.color=c[1];
+  requestAnimationFrame(()=>{ $("va-mk").style.left=(Math.min(50,b)/50*100).toFixed(1)+"%"; });
+  const h=Number(CFG.boy)/100, b0=bmiOf(Number(CFG.basKilo)), bh=bmiOf(Number(CFG.hedefKilo));
+  $("va-b0").textContent=f1(b0); $("va-bh").textContent=f1(bh); $("va-nr").textContent=Math.round(18.5*h*h)+"-"+Math.round(24.9*h*h)+" kg";
+  const bf=bfOf(b,a);
+  if(bf==null){ ["vy-bf","vy-fm","vy-lm","vy-b0"].forEach(id=>$(id).textContent="-"); setCat($("vy-cat"),"Doğum yılını gir",null);
+    $("vy-note").textContent="Yağ oranı için Ayarlar → Profil'e doğum yılını gir."; return; }
+  $("vy-bf").textContent="%"+f1(bf); const bc=bfCat(bf); setCat($("vy-cat"),bc,bc==="Yüksek"?"#fb923c":bc==="Ortalama"?"#facc15":"#22c55e");
+  $("vy-fm").textContent=f1(kilo*bf/100)+" kg"; $("vy-lm").textContent=f1(kilo*(1-bf/100))+" kg";
+  const bf0=bfOf(b0,a); $("vy-b0").textContent= bf0==null?"-":"%"+f1(bf0);
+  $("vy-note").textContent="Kilo, boy, yaş ve cinsiyetten CUN-BAE formülüyle hesaplanır. Kesin ölçüm değildir; kaslı biri için gerçeğinden yüksek çıkar. Asıl önemli olan haftalar içindeki gidişattır.";
 }
+function lastKilo(){ const r=[]; try{ for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k&&k.startsWith("db:gunler/")){ const v=JSON.parse(localStorage.getItem(k)); if(v&&v.kilo!=null&&v.tarih) r.push(v);} } }catch(e){}
+  r.sort((a,b)=>a.tarih<b.tarih?-1:1); return r.length? r[r.length-1] : null; }
+function loadBody(){ const l=lastKilo();
+  if(l) renderBody(Number(l.kilo), "son tartı "+l.tarih.slice(8,10)+"."+l.tarih.slice(5,7));
+  else renderBody(Number(CFG.basKilo)||null, CFG.basKilo? "başlangıç kilosu":""); }
+window.BODY_STATS=()=>{ const l=lastKilo(), k=l?Number(l.kilo):Number(CFG.basKilo)||null, b=bmiOf(k), m=bmrOf(k); return {bmi:b,bf:bfOf(b,yas()),tdee:m?m*aktF():null}; };
 async function loadJourney(){
   if(!db) return; let docs=[];
   try{const q=await db.collection("gunler").where("tarih",">=",CFG.baslangic).get(); docs=q.docs.map(d=>d.data()).filter(x=>x&&x.kilo!=null).sort((a,b)=>a.tarih<b.tarih?-1:1)}catch(e){return}
@@ -2014,30 +2066,10 @@ async function loadJourney(){
     else eta.innerHTML="Son 3 haftada ortalama düşmüyor. Pazar analizinde kaloriye birlikte bakalım.";
   } else eta.textContent="Tahmin için en az 10 günlük tartı gerekiyor; şimdilik "+pts.length+" tartı var. Kesikli gri çizgi: haftada vücut ağırlığının %0,75\'i kadar kayıp.";
 }
-async function loadOlc(){
-  olc=[];
-  if(db){try{const q=await db.collection("olcumler").orderBy("tarih","desc").limit(36).get(); olc=q.docs.map(d=>d.data()).filter(Boolean)}catch(e){}}
-  renderOlc();
-  const td=iso(new Date());
-  if(db&&!$("o-kilo").value){try{const g=await db.doc("gunler/"+td).get(); const v=g&&g.data&&g.data(); if(v&&v.kilo!=null) $("o-kilo").value=fmt(v.kilo)}catch(e){}}
-  calc();
-}
-$("o-save").addEventListener("click",async()=>{
-  const r=calc(); const st=$("o-st");
-  if(r.bf==null){st.textContent="Bel ve boyunu cm olarak gir."; st.style.color="var(--warn)"; return}
-  const td=iso(new Date());
-  const doc={tarih:td,bel:r.bel,boyun:r.boyun,kilo:r.kilo,bf:Math.round(r.bf*10)/10,_t:Date.now()};
-  if(r.kilo) doc.yagsiz=Math.round(r.kilo*(1-r.bf/100)*10)/10;
-  if(!db){st.textContent="Kayıt bağlantısı yok."; st.style.color="var(--warn)"; return}
-  st.textContent="Kaydediliyor..."; st.style.color="var(--muted)";
-  try{await db.doc("olcumler/"+td).set(doc); st.textContent="Kaydedildi."; st.style.color="var(--ok)"; olc=olc.filter(o=>o.tarih!==td); olc.unshift(doc); renderOlc();}
-  catch(e){st.textContent="Kaydedilemedi, tekrar dene."; st.style.color="var(--warn)"}
-});
-
 (async()=>{
   try{db=window.YEREL&&window.YEREL.use?await window.YEREL.use("db"):null}catch(e){db=null}
-  loadShop(); loadOlc(); loadJourney();
-  document.getElementById("t-olc").addEventListener("click",()=>loadJourney());
+  loadShop(); loadBody(); loadJourney();
+  document.getElementById("t-olc").addEventListener("click",()=>{loadJourney(); loadBody();});
 })();
 })();
 </script>
@@ -2063,11 +2095,11 @@ document.querySelectorAll(".settabs button").forEach(b=>b.addEventListener("clic
 
 /* ---------- profil ---------- */
 function fillProfile(){
-  $("c-ad").value=W.ad||""; $("c-cins").value=W.cinsiyet||"e"; $("c-bas").value=W.baslangic; $("c-boy").value=fmt(W.boy);
+  $("c-ad").value=W.ad||""; $("c-cins").value=W.cinsiyet||"e"; $("c-bas").value=W.baslangic; $("c-boy").value=fmt(W.boy); $("c-dy").value=W.dogumYili||"";
   $("c-bk").value=fmt(W.basKilo); $("c-hk").value=fmt(W.hedefKilo); $("c-kcal").value=W.kcal||""; $("c-pro").value=W.protein||""; $("c-adim").value=W.adim||"";
 }
 function readProfile(){
-  W.ad=$("c-ad").value.trim(); W.cinsiyet=$("c-cins").value; W.baslangic=$("c-bas").value||W.baslangic; W.boy=num($("c-boy").value);
+  W.ad=$("c-ad").value.trim(); W.cinsiyet=$("c-cins").value; W.baslangic=$("c-bas").value||W.baslangic; W.boy=num($("c-boy").value); { const dy=num($("c-dy").value); W.dogumYili=(dy&&dy>1920&&dy<=new Date().getFullYear()-10)?Math.round(dy):null; }
   W.basKilo=num($("c-bk").value); W.hedefKilo=num($("c-hk").value); W.kcal=num($("c-kcal").value)||2000; W.protein=num($("c-pro").value)||150; W.adim=num($("c-adim").value)||8000;
 }
 
@@ -2190,7 +2222,7 @@ function renderOgun(){
 $("og-add").addEventListener("click",()=>{ W.ogunler.push({ad:"",yemekler:[{ad:"",kcal:null,p:null}]}); renderOgun(); });
 
 /* ---------- aç / kapat / kaydet ---------- */
-function draft(){ const C=window.CFG; return JSON.parse(JSON.stringify({ad:C.ad,cinsiyet:C.cinsiyet,baslangic:C.baslangic,boy:C.boy,basKilo:C.basKilo,hedefKilo:C.hedefKilo,kcal:C.kcal,protein:C.protein,adim:C.adim,programlar:C.programlar,takvim:C.takvim,ogunler:C.ogunler})); }
+function draft(){ const C=window.CFG; return JSON.parse(JSON.stringify({ad:C.ad,cinsiyet:C.cinsiyet,baslangic:C.baslangic,boy:C.boy,dogumYili:C.dogumYili||null,aktivite:C.aktivite||null,basKilo:C.basKilo,hedefKilo:C.hedefKilo,kcal:C.kcal,protein:C.protein,adim:C.adim,programlar:C.programlar,takvim:C.takvim,ogunler:C.ogunler})); }
 function open(){ $("psheet").hidden=true; W=draft(); fillProfile(); renderTakvim(); renderProgs(); renderOgun(); $("gx-st").textContent=""; $("gx-ok").hidden=true; $("setv").hidden=false; document.body.style.overflow="hidden"; }
 function close(){ const v=$("setv"); let reduce=false; try{reduce=matchMedia("(prefers-reduced-motion: reduce)").matches}catch(e){} const fin=()=>{v.hidden=true; v.classList.remove("closing"); $("psheet").hidden=true; document.body.style.overflow="";}; if(reduce){fin();return} v.classList.add("closing"); setTimeout(fin,190); }
 function clean(o){
@@ -2285,7 +2317,7 @@ $("gem-copy").addEventListener("click",async()=>{
   const plan=C.gunler[String(d.getDay())];
   const L=["GÜNLÜK ÖZET · "+t+" ("+G[d.getDay()]+")"+(plan?" · plan: "+plan:" · plan: antrenman yok"),
     "Hedefler: "+C.kcal+" kcal, "+C.protein+" g protein, "+C.adim+" adım"+(C.hedefKilo?", hedef kilo "+fmt(C.hedefKilo):""),
-    "Sabah kilo: "+(x.kilo!=null?fmt(x.kilo)+" kg":"girilmedi"),
+    "Sabah kilo: "+(x.kilo!=null?fmt(x.kilo)+" kg":"girilmedi")+(()=>{ try{ const z=window.BODY_STATS&&window.BODY_STATS(); return z&&z.bmi? " · VKİ "+fmt(Math.round(z.bmi*10)/10)+(z.bf!=null?" · tahmini yağ %"+fmt(Math.round(z.bf*10)/10):"")+(z.tdee?" · tahmini koruma kalorisi ~"+Math.round(z.tdee/50)*50+" kcal":"") : ""; }catch(e){return ""} })(),
     "Toplam: ~"+Math.round(k)+" kcal, ~"+Math.round(p)+" g protein",
     "Öğünler:"].concat(og.map(o=>"- "+(o.saat?o.saat+" ":"")+o.ad+" ("+(o.kcal!=null?Math.round(o.kcal):"?")+" kcal, "+(o.p!=null?Math.round(o.p):"?")+" g)"));
   L.push("Adım: "+(x.adim!=null?x.adim:"girilmedi"));
