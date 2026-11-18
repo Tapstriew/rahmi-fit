@@ -1,5 +1,27 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Rahmi Fit">
+<meta name="theme-color" content="#ECFDF5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0B1411" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+:root{padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;font-size:14px;min-height:100vh;min-height:100dvh}
+img{max-width:100%}
+[hidden]{display:none!important}
+input,select,textarea,button{font-size:16px}
+</style>
 <title>Rahmi Fit</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <script>
 /* ---- ayarlar ve cihaz içi kayıt (localStorage) ---- */
 (function(){
@@ -667,6 +689,8 @@ body::before{background:var(--bg)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 
+</head>
+<body>
 <div class="wrap">
   <header class="top">
     <div class="brand"><button class="mark" id="gear" aria-label="Ayarlar" style="border:0;cursor:pointer;position:relative">R<span class="gbadge" aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg></span></button><div><b>RAHMİ FIT</b><span id="weekinfo"></span></div></div>
@@ -2282,5 +2306,5 @@ $("gem-copy").addEventListener("click",async()=>{
 })();
 
 </script>
-
-
+</body>
+</html>
